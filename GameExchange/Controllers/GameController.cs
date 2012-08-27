@@ -9,6 +9,9 @@ namespace GameExchange.Controllers
 {
     public class GameController : Controller
     {
+        // create a model object
+        private GameContext entry_Game = new GameContext();
+
         //
         // GET: /Game/
 
@@ -23,7 +26,19 @@ namespace GameExchange.Controllers
         [HttpPost]
         public ActionResult Create(Game entry)
         {
-            entry.Name
+            try
+            {
+                entry_Game.Entries.Add(entry);
+                entry_Game.SaveChanges();
+
+                return Content("A new game has been successfully added!");
+            }
+            catch (InvalidOperationException e)
+            {
+                e.StackTrace.ToString();
+            }
+
+            return Content("Add new Game failed!");
         }
 
     }
